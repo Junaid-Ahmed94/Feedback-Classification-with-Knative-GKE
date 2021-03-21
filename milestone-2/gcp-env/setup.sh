@@ -28,11 +28,11 @@ gcloud firestore databases create --region ${REGION}
 # Create k8s cluster
 CLUSTER_NAME="classify-events"
 MACHINE_TYPE="e2-standard-2"
-CLUSTER_VERSION="1.18.12-gke.2001"
+CLUSTER_VERSION="1.18.16-gke.302"
 REGION="europe-west3"
 ZONE="europe-west3-a"
 gcloud beta container --project "$PROJECT_ID" clusters create $CLUSTER_NAME \
-  --zone $ZONE --no-enable-basic-auth --cluster-version $CLUSTER_VERSION \
+  --zone $ZONE --no-enable-basic-auth  \
   --release-channel "regular" --machine-type $MACHINE_TYPE --image-type "COS" \
   --disk-type "pd-standard" --disk-size "100" --metadata disable-legacy-endpoints=true \
   --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
@@ -44,7 +44,7 @@ gcloud beta container --project "$PROJECT_ID" clusters create $CLUSTER_NAME \
   --istio-config auth=MTLS_PERMISSIVE --enable-autoupgrade --enable-autorepair \
   --max-surge-upgrade 1 --max-unavailable-upgrade 0 \
   --workload-pool "$PROJECT_ID.svc.id.goog"
-
+  # --cluster-version $CLUSTER_VERSION
 
 # Install Knative onto newly-created cluster.
 KNATIVE_SERVING_VERSION="v0.19.0"
